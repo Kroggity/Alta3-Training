@@ -4,14 +4,13 @@
   gather_facts: no
   
   tasks:
-    - name: DL virus protection software
-      get_url:
-          url: http://www.clamav.net/downloads/production/clamav-0.99.3.tar.gz
-          dest: "~/{{ inventory_hostname }}.clamav-0.99.3.tar.gz"
-        
+    - name: Create Directory
+      file:
+        path: ~/Downloads
+        state: directory
+    
     - name: Extract the tarball contents
       unarchive:
-        src: "~/{{ inventory_hostname }}.clamav-0.99.3.tar.gz"
-        dest: ~/
+        src: http://www.clamav.net/downloads/production/clamav-0.99.3.tar.gz
+        dest: "~/Downloads/{{ inventory_hostname }}.clamav-0.99.3.tar.gz"
         remote_src: yes
-
