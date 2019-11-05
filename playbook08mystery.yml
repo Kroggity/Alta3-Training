@@ -1,0 +1,50 @@
+---
+- name: Deploy a server
+  hosts: fry
+
+  gather_facts: no
+
+  vars_files:
+          - vars/minecraft.yml
+  
+  tasks:
+          - name: update apt
+            apt:
+                    upgrade: dist
+                    update_cache: yes
+            become: yes
+
+          - name: install addtl apps
+            apt:
+                    name:
+                            - default-jre
+                            - screen
+                            - git
+                            - vim
+                            - fail2ban
+                    state: present
+            become: yes
+
+          - name: dir to install to
+            file:
+                    path: ~/minecraft
+                    state: directory
+
+          - name: Move start script to dir
+            copy:
+                    src: ~/ans/files/run.sh
+                    dest: ~/minecraft
+                    mode: u+x
+
+          - name: DL Minecraft
+            get_url:
+                    url: "{{ mc_version }}"
+                    dest: ~/minecraft/minecraft_server.jar
+
+          - name: move EULA into MC dir
+            copy:
+                    src: ~/ans/files/eula.txt
+                    dest: ~/minecraft
+
+          - name: start the server 
+            command: "chdir=~/minecraft/ screen -S minecraft -d -m ~/minecraft/run.sh"
