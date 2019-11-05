@@ -1,3 +1,10 @@
 ---
 - name: Raf Demo file
-  hosts: 
+  hosts: planetexpress
+
+  tasks:
+          - name: Copy the tarball to the remote servers
+            copy:
+                    src: /home/student/ans/files/dempscript.tgz
+                    dest: ~/
+          - name:

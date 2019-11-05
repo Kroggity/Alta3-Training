@@ -1,0 +1,17 @@
+---
+- name: Learning about get URL
+  hosts: planetexpress:!farnsworth
+  gather_facts: no
+  
+  tasks:
+    - name: DL virus protection software
+      get_url:
+          url: http://www.clamav.net/downloads/production/clamav-0.99.3.tar.gz
+          dest: "~/{{ inventory_hostname }}.clamav-0.99.3.tar.gz"
+        
+    - name: Extract the tarball contents
+      unarchive:
+        src: "~/{{ inventory_hostname }}.clamav-0.99.3.tar.gz"
+        dest: ~/
+        remote_src: yes
+
