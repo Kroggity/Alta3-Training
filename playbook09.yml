@@ -1,0 +1,22 @@
+---
+- name: Lerning about the when statement
+  hosts: planetexpress
+  gather_facts: yes
+  vars_files:
+          - vars/gotg.yml
+
+  tasks:
+          - name: Install with apt
+            when: ansible_pkg_mgr == "apt"
+            apt:
+                    name: "{{ freegamesapt }}"
+                    state: "{{ absentorpresent }}"
+            become: yes
+
+          - name: Install wit yum
+            when: ansible_pkg_mgr == "yum"
+            yum:
+                    name: "{{ freegamesyum }}"
+                    state: "{{ absentorpresent }}"
+            become: yes
+

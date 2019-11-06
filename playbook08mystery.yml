@@ -13,6 +13,8 @@
                     upgrade: dist
                     update_cache: yes
             become: yes
+            tags:
+                    - svrsetup
 
           - name: install addtl apps
             apt:
@@ -24,27 +26,39 @@
                             - fail2ban
                     state: present
             become: yes
+            tags:
+                    - svrsetup
 
           - name: dir to install to
             file:
                     path: ~/minecraft
                     state: directory
+            tags:
+                    - mcdeploy
 
           - name: Move start script to dir
             copy:
                     src: ~/ans/files/run.sh
                     dest: ~/minecraft
                     mode: u+x
+            tags:
+                    - mcdeploy
 
           - name: DL Minecraft
             get_url:
                     url: "{{ mc_version }}"
                     dest: ~/minecraft/minecraft_server.jar
+            tags:
+                    - mcdeploy
 
           - name: move EULA into MC dir
             copy:
                     src: ~/ans/files/eula.txt
                     dest: ~/minecraft
+            tags:
+                    - mcdeploy
 
           - name: start the server 
             command: "chdir=~/minecraft/ screen -S minecraft -d -m ~/minecraft/run.sh"
+            tags:
+                    - mcdeploy
