@@ -13,7 +13,7 @@
                     state: "{{ absentorpresent }}"
             become: yes
 
-          - name: Install wit yum
+          - name: Install with yum
             when: ansible_pkg_mgr == "yum"
             yum:
                     name: "{{ freegamesyum }}"
