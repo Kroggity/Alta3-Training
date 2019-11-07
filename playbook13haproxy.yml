@@ -1,0 +1,8 @@
+---
+- name: Learning about Roles
+  hosts: planetexpress:!farnsworth
+  become: yes
+  
+  roles:
+    - geerlingguy.haproxy
+

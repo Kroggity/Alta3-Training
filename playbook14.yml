@@ -1,0 +1,6 @@
+---
+- name: Deploy free text games
+  hosts: planetexpress
+
+  roles:
+          - rzfeeser.ansible_role_free_linux_term_games
