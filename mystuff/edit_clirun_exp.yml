@@ -1,0 +1,34 @@
+# To run this playbook:
+# ansible-playbook -i ~/.ansible/inventory/ribbon /export/home/otto/ribbon/edit_clirun_exp.yml
+# from the otto account
+---
+- name: PrepCLI
+  hosts: all
+  remote_user: logserver
+  gather_facts: no
+  tasks:
+    - name: Comment out set cliMethod lines using Replace
+      replace:
+        path: /space/logserver/work/clirun.exp
+        regexp: '^set cliMethod "telnet"'
+        replace: '#set cliMethod "telnet"'
+    - name: Uncomment 'if cliMethod is ssh' using lineinfile
+      lineinfile:
+        backrefs: yes
+        path: /space/logserver/work/clirun.exp
+        regexp: '^#  if \{  \$cliMethod == "ssh"    \} \{ set aRunParam\(cliPort\) 5401 \}'
+        line: '  if {  $cliMethod == "ssh"    } { set aRunParam(cliPort) 5401 }'
+    - name: Uncomment 'if precommand is -m' using lineinfile
+      lineinfile:
+        backrefs: yes
+        path: /space/logserver/work/clirun.exp
+        regexp: '^#   if \{ \$precommand == "-m" } {set cliMethod             \$arg }'
+        line: '    if { $precommand == "-m" } {set cliMethod             $arg }'
+    - name: Add line 'if arg -m after -l'
+      lineinfile:
+        path: /space/logserver/work/clirun.exp
+        line: '         $arg == "-m" ||'
+        insertbefore: '^         \$arg == "-p" \|\|'
+        state: present
+
+ 
