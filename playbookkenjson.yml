@@ -1,0 +1,9 @@
+---
+- name: Test callback
+  hosts: planetexpress:!farnsworth
+
+  tasks:
+          - name: show timestamp
+            debug:
+                    var: ansible_date_time.iso8601_basic_short
+
